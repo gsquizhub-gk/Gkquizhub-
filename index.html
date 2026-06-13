@@ -1,293 +1,183 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GS QUIZHUB QUIZ APP</title>
+<title>GS QUIZ HUB</title>
 
 <style>
 body{
-    margin:0;
-    font-family: Arial;
-    background:#0a0f1e;
-    color:white;
+  margin:0;
+  font-family:Arial;
+  background:linear-gradient(135deg,#0f172a,#1e3a8a,#7c3aed);
+  color:white;
 }
 
-/* HERO */
-.hero{
-    height:220px;
-    background:linear-gradient(135deg,rgba(0,0,0,0.7),rgba(0,0,0,0.3)),
-    url('banner.jpg');
-    background-size:cover;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
+/* HEADER */
+header{
+  text-align:center;
+  padding:22px;
+  font-size:32px;
+  font-weight:bold;
+  color:#00ffcc;
+  text-shadow:0 0 10px #00ffcc;
 }
 
-.hero h1{
-    font-size:38px;
-    background:linear-gradient(90deg,#00f5ff,#ff00d4,#facc15);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
+/* HOME */
+#home{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+  padding:20px;
 }
 
-.hero button{
-    margin-top:10px;
-    padding:10px 15px;
-    border:none;
-    border-radius:10px;
-    background:#22c55e;
-    color:black;
-    font-weight:bold;
-}
-
-/* CARD */
-.container{
-    padding:15px;
-}
-
+/* CARDS */
 .card{
-    background:#111827;
-    padding:15px;
-    border-radius:12px;
-    margin-bottom:12px;
-    border-left:4px solid #38bdf8;
+  padding:22px;
+  text-align:center;
+  border-radius:18px;
+  cursor:pointer;
+  font-weight:bold;
+  font-size:16px;
+  transition:0.3s;
+  color:white;
 }
 
-.card h2{
-    color:#38bdf8;
+/* COLORS */
+.c1{background:linear-gradient(135deg,#ef4444,#f97316);}
+.c2{background:linear-gradient(135deg,#3b82f6,#06b6d4);}
+.c3{background:linear-gradient(135deg,#22c55e,#16a34a);}
+.c4{background:linear-gradient(135deg,#a855f7,#ec4899);}
+.c5{background:linear-gradient(135deg,#eab308,#f97316);}
+.c6{background:linear-gradient(135deg,#64748b,#334155);}
+
+.card:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 15px rgba(255,255,255,0.3);
 }
 
-/* QUIZ BOX */
-.quiz{
-    display:none;
-    background:#1f2937;
-    padding:15px;
-    border-radius:12px;
-    margin:15px;
+/* QUIZ */
+#quizBox{
+  display:none;
+  padding:20px;
 }
 
-.option{
-    display:block;
-    padding:10px;
-    margin:8px 0;
-    background:#0b1220;
-    border-radius:8px;
-    cursor:pointer;
-}
-
-.option:hover{
-    background:#334155;
-}
-
-/* SCORE */
-.score{
-    font-weight:bold;
-    color:#22c55e;
-}
-
-/* DAILY */
-.daily{
-    margin:15px;
-    padding:15px;
-    background:#0f172a;
-    border:2px solid #22c55e;
-    border-radius:12px;
-}
-
-/* BOTTOM NAV */
-.nav{
-    position:fixed;
-    bottom:0;
-    width:100%;
-    display:flex;
-    justify-content:space-around;
-    background:#111827;
-    padding:10px 0;
-    border-top:1px solid #333;
-}
-
-.nav div{
-    font-size:12px;
-    text-align:center;
-}
-
-/* TOAST */
-.toast{
-    position:fixed;
-    top:20px;
-    right:20px;
-    background:#22c55e;
-    color:black;
-    padding:10px;
-    border-radius:8px;
-    display:none;
+.btn{
+  padding:12px;
+  margin:6px;
+  background:#00ffcc;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:bold;
+  color:black;
 }
 </style>
-
 </head>
 
 <body>
 
-<div class="hero">
-    <h1>🔥 GS QUIZHUB</h1>
-    <button onclick="startQuiz()">🧠 Start GK Quiz</button>
-</div>
+<header>🔥 GS QUIZ HUB 🔥</header>
 
-<div class="container">
+<!-- HOME -->
+<div id="home">
 
-<div class="card">
-<h2>📘 SSC / Railway / Police</h2>
-<p>Daily GK + GS Practice Hub</p>
-</div>
+  <div class="card c1" onclick="startQuiz('railway')">🚆 Railway</div>
+  <div class="card c2" onclick="startQuiz('ssc')">📘 SSC</div>
+  <div class="card c3" onclick="startQuiz('police')">👮 Police</div>
+  <div class="card c4" onclick="startQuiz('form')">📝 Form Test</div>
+  <div class="card c5" onclick="startQuiz('dimag')">🧠 Dimag Test</div>
 
-<div class="daily">
-<h3>🔥 Daily Practice</h3>
-<p>👉 India ka Constitution kab bana?</p>
-<p>👉 Current PM of India?</p>
-<p>👉 Railway GK Important Set</p>
-</div>
+  <div class="card c2" onclick="showResult()">📊 Result</div>
+  <div class="card c4" onclick="resetData()">♻ Reset</div>
+  <div class="card c1" onclick="about()">ℹ About</div>
 
 </div>
 
-<!-- QUIZ BOX -->
-<div class="quiz" id="quizBox">
-<h2>🧠 Live GK Quiz</h2>
-<h3 id="question"></h3>
-
-<div id="options"></div>
-
-<p class="score">Score: <span id="score">0</span></p>
-</div>
-
-<!-- TOAST -->
-<div class="toast" id="toast">Correct ✔</div>
-
-<!-- BOTTOM NAV -->
-<div class="nav">
-<div>🏠 Home</div>
-<div>🧠 Quiz</div>
-<div>📘 Notes</div>
-<div>⚙ Settings</div>
+<!-- QUIZ -->
+<div id="quizBox">
+  <h2 id="q"></h2>
+  <div id="opt"></div>
 </div>
 
 <script>
-let questions = [
-{
-q:"भारत की राजधानी क्या है?",
-a:["Delhi","Mumbai","Kolkata","Chennai"],
-correct:0
-},
-{
-q:"Railway का full form क्या है?",
-a:["Indian Railway","Railway India","Train Dept","None"],
-correct:0
-},
-{
-q:"SSC का full form?",
-a:["Staff Selection Commission","State Service","School Service","None"],
-correct:0
-}
-];
 
-let index=0;
-let score=0;
+let data = JSON.parse(localStorage.getItem("gsquiz")) || {
+  railway:[
+    {question:"भारत की राजधानी?",options:["Mumbai","Delhi","Kolkata","Chennai"],answer:"Delhi"},
+    {question:"भारत का सबसे लंबा प्लेटफॉर्म?",options:["Gorakhpur","New Delhi","Howrah","Mumbai CST"],answer:"Gorakhpur"}
+  ],
+  ssc:[
+    {question:"1 का वर्ग क्या है?",options:["1","2","3","4"],answer:"1"}
+  ],
+  police:[],
+  form:[],
+  dimag:[
+    {question:"10 ÷ 2 + 5 = ?",options:["10","8","7","5"],answer:"10"}
+  ]
+};
 
-function startQuiz(){
-document.getElementById("quizBox").style.display="block";
-showQ();
-}
+let current=[], i=0;
 
-function showQ(){
-let q=questions[index];
-document.getElementById("question").innerText=q.q;
+function startQuiz(type){
+  current = data[type] || [];
+  i=0;
 
-let opt="";
-q.a.forEach((o,i)=>{
-opt+=`<div class='option' onclick='check(${i})'>${o}</div>`;
-});
-document.getElementById("options").innerHTML=opt;
+  document.getElementById("home").style.display="none";
+  document.getElementById("quizBox").style.display="block";
+
+  show();
 }
 
-function check(i){
-if(i===questions[index].correct){
-score++;
-document.getElementById("toast").style.display="block";
-document.getElementById("toast").innerText="Correct ✔";
-}else{
-document.getElementById("toast").style.display="block";
-document.getElementById("toast").innerText="Wrong ❌";
+function show(){
+  if(current.length==0){
+    alert("No Questions Added");
+    location.reload();
+    return;
+  }
+
+  let q = current[i];
+  document.getElementById("q").innerText = q.question;
+
+  let html="";
+  q.options.forEach(o=>{
+    html += `<button class="btn" onclick="check('${o}')">${o}</button><br>`;
+  });
+
+  document.getElementById("opt").innerHTML = html;
 }
 
-setTimeout(()=>{
-document.getElementById("toast").style.display="none";
-},1000);
+function check(ans){
+  if(ans==current[i].answer){
+    alert("✔ Correct");
+  }else{
+    alert("❌ Wrong");
+  }
 
-index++;
-document.getElementById("score").innerText=score;
+  i++;
+  if(i<current.length){
+    show();
+  }else{
+    alert("Test Finished 🎉");
+    location.reload();
+  }
+}
 
-if(index<questions.length){
-showQ();
-}else{
-document.getElementById("quizBox").innerHTML=
-`<h2>Quiz Finished 🎯</h2><p>Score: ${score}/${questions.length}</p>`;
+/* OPTIONS */
+function showResult(){
+  alert("Result feature coming soon 🚀");
 }
+
+function resetData(){
+  localStorage.removeItem("gsquiz");
+  alert("Reset Done ♻");
+  location.reload();
 }
+
+function about(){
+  alert("GS QUIZ HUB - Railway, SSC, Police Exam Practice App 🔥");
+}
+
 </script>
 
 </body>
-</html>
-const questions = [
-  {
-    question: "भारतीय संविधान कब लागू हुआ था?",
-    options: ["15 August 1947", "26 January 1950", "2 October 1949", "26 November 1949"],
-    answer: "26 January 1950"
-  },
-  {
-    question: "रेलवे का राष्ट्रीयकरण भारत में कब हुआ था?",
-    options: ["1950", "1951", "1948", "1960"],
-    answer: "1951"
-  },
-  {
-    question: "भारतीय रेलवे का सबसे बड़ा ज़ोन कौन सा है?",
-    options: ["Northern Railway", "Southern Railway", "Central Railway", "Western Railway"],
-    answer: "Northern Railway"
-  },
-  {
-    question: "हावड़ा ब्रिज किस नदी पर बना है?",
-    options: ["यमुना", "गंगा", "हुगली", "गोदावरी"],
-    answer: "हुगली"
-  },
-  {
-    question: "भारत का सबसे लंबा प्लेटफॉर्म कहाँ है?",
-    options: ["Gorakhpur", "New Delhi", "Howrah", "Mumbai CST"],
-    answer: "Gorakhpur"
-  },
-  {
-    question: "रेलवे भर्ती बोर्ड (RRB) की स्थापना कब हुई थी?",
-    options: ["1942", "1945", "1948", "1950"],
-    answer: "1942"
-  },
-  {
-    question: "भारत का सबसे व्यस्त रेलवे स्टेशन कौन सा है?",
-    options: ["New Delhi", "Howrah", "Chennai Central", "Mumbai CST"],
-    answer: "Howrah"
-  },
-  {
-    question: "डिब्रूगढ़ एक्सप्रेस भारत का क्या है?",
-    options: ["Fastest Train", "Longest Train Route", "First Train", "Luxury Train"],
-    answer: "Longest Train Route"
-  },
-  {
-    question: "भारतीय रेलवे का मुख्यालय कहाँ है?",
-    options: ["Mumbai", "New Delhi", "Kolkata", "Chennai"],
-    answer: "New Delhi"
-  },
-  {
-    question: "वंदे भारत एक्सप्रेस किस प्रकार की ट्रेन है?",
-    options: ["Freight Train", "Superfast Semi High Speed", "Metro", "Local Train"],
-    answer: "Superfast Semi High Speed"
-  }
-];
+      </html>
