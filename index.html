@@ -1,183 +1,130 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>GS QUIZ HUB</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GS QuizHub</title>
 
 <style>
-body{
+*{
   margin:0;
-  font-family:Arial;
-  background:linear-gradient(135deg,#0f172a,#1e3a8a,#7c3aed);
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial, sans-serif;
+}
+
+body{
+  background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
   color:white;
 }
 
 /* HEADER */
 header{
-  text-align:center;
-  padding:22px;
-  font-size:32px;
-  font-weight:bold;
-  color:#00ffcc;
-  text-shadow:0 0 10px #00ffcc;
-}
-
-/* HOME */
-#home{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:15px;
+  background: linear-gradient(90deg,#ff512f,#dd2476);
   padding:20px;
+  text-align:center;
+  font-size:26px;
+  font-weight:bold;
+  letter-spacing:1px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.3);
 }
 
-/* CARDS */
-.card{
-  padding:22px;
+/* HERO */
+.hero{
+  padding:30px 20px;
   text-align:center;
-  border-radius:18px;
-  cursor:pointer;
-  font-weight:bold;
+}
+
+.hero h1{
+  font-size:30px;
+  margin-bottom:10px;
+}
+
+.hero p{
+  opacity:0.9;
   font-size:16px;
-  transition:0.3s;
-  color:white;
 }
 
-/* COLORS */
-.c1{background:linear-gradient(135deg,#ef4444,#f97316);}
-.c2{background:linear-gradient(135deg,#3b82f6,#06b6d4);}
-.c3{background:linear-gradient(135deg,#22c55e,#16a34a);}
-.c4{background:linear-gradient(135deg,#a855f7,#ec4899);}
-.c5{background:linear-gradient(135deg,#eab308,#f97316);}
-.c6{background:linear-gradient(135deg,#64748b,#334155);}
-
-.card:hover{
-  transform:scale(1.05);
-  box-shadow:0 0 15px rgba(255,255,255,0.3);
-}
-
-/* QUIZ */
-#quizBox{
-  display:none;
-  padding:20px;
+/* BUTTONS */
+.btn-container{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  margin-top:20px;
+  gap:15px;
 }
 
 .btn{
-  padding:12px;
-  margin:6px;
-  background:#00ffcc;
-  border:none;
-  border-radius:10px;
-  cursor:pointer;
+  background:linear-gradient(45deg,#00c6ff,#0072ff);
+  padding:15px 20px;
+  border-radius:12px;
+  text-decoration:none;
+  color:white;
   font-weight:bold;
-  color:black;
+  width:140px;
+  text-align:center;
+  transition:0.3s;
+  box-shadow:0 5px 10px rgba(0,0,0,0.3);
+}
+
+.btn:hover{
+  transform:scale(1.05);
+}
+
+/* DAILY PRACTICE BOX */
+.practice{
+  margin:30px 20px;
+  background:rgba(255,255,255,0.1);
+  padding:20px;
+  border-radius:15px;
+  text-align:center;
+  backdrop-filter: blur(10px);
+}
+
+.practice h2{
+  margin-bottom:10px;
+  color:#ffd700;
+}
+
+/* FOOTER */
+footer{
+  margin-top:30px;
+  text-align:center;
+  padding:15px;
+  background:#111;
+  font-size:14px;
 }
 </style>
+
 </head>
 
 <body>
 
-<header>🔥 GS QUIZ HUB 🔥</header>
+<header>
+🔥 GS QUIZHUB 🔥
+</header>
 
-<!-- HOME -->
-<div id="home">
+<div class="hero">
+  <h1>Welcome to Best GK Quiz Platform</h1>
+  <p>Daily Practice karo aur apni knowledge strong banao 💪</p>
 
-  <div class="card c1" onclick="startQuiz('railway')">🚆 Railway</div>
-  <div class="card c2" onclick="startQuiz('ssc')">📘 SSC</div>
-  <div class="card c3" onclick="startQuiz('police')">👮 Police</div>
-  <div class="card c4" onclick="startQuiz('form')">📝 Form Test</div>
-  <div class="card c5" onclick="startQuiz('dimag')">🧠 Dimag Test</div>
-
-  <div class="card c2" onclick="showResult()">📊 Result</div>
-  <div class="card c4" onclick="resetData()">♻ Reset</div>
-  <div class="card c1" onclick="about()">ℹ About</div>
-
+  <div class="btn-container">
+    <a href="#" class="btn">Start Quiz</a>
+    <a href="#" class="btn">GK Test</a>
+    <a href="#" class="btn">Math Quiz</a>
+    <a href="#" class="btn">Current Affairs</a>
+  </div>
 </div>
 
-<!-- QUIZ -->
-<div id="quizBox">
-  <h2 id="q"></h2>
-  <div id="opt"></div>
+<div class="practice">
+  <h2>📚 Daily Practice Zone</h2>
+  <p>Roz 10 questions solve karo aur top bano 🏆</p>
+  <a href="#" class="btn" style="margin-top:15px;">Start Practice</a>
 </div>
 
-<script>
-
-let data = JSON.parse(localStorage.getItem("gsquiz")) || {
-  railway:[
-    {question:"भारत की राजधानी?",options:["Mumbai","Delhi","Kolkata","Chennai"],answer:"Delhi"},
-    {question:"भारत का सबसे लंबा प्लेटफॉर्म?",options:["Gorakhpur","New Delhi","Howrah","Mumbai CST"],answer:"Gorakhpur"}
-  ],
-  ssc:[
-    {question:"1 का वर्ग क्या है?",options:["1","2","3","4"],answer:"1"}
-  ],
-  police:[],
-  form:[],
-  dimag:[
-    {question:"10 ÷ 2 + 5 = ?",options:["10","8","7","5"],answer:"10"}
-  ]
-};
-
-let current=[], i=0;
-
-function startQuiz(type){
-  current = data[type] || [];
-  i=0;
-
-  document.getElementById("home").style.display="none";
-  document.getElementById("quizBox").style.display="block";
-
-  show();
-}
-
-function show(){
-  if(current.length==0){
-    alert("No Questions Added");
-    location.reload();
-    return;
-  }
-
-  let q = current[i];
-  document.getElementById("q").innerText = q.question;
-
-  let html="";
-  q.options.forEach(o=>{
-    html += `<button class="btn" onclick="check('${o}')">${o}</button><br>`;
-  });
-
-  document.getElementById("opt").innerHTML = html;
-}
-
-function check(ans){
-  if(ans==current[i].answer){
-    alert("✔ Correct");
-  }else{
-    alert("❌ Wrong");
-  }
-
-  i++;
-  if(i<current.length){
-    show();
-  }else{
-    alert("Test Finished 🎉");
-    location.reload();
-  }
-}
-
-/* OPTIONS */
-function showResult(){
-  alert("Result feature coming soon 🚀");
-}
-
-function resetData(){
-  localStorage.removeItem("gsquiz");
-  alert("Reset Done ♻");
-  location.reload();
-}
-
-function about(){
-  alert("GS QUIZ HUB - Railway, SSC, Police Exam Practice App 🔥");
-}
-
-</script>
+<footer>
+© 2026 GS QuizHub | Made with ❤️
+</footer>
 
 </body>
-      </html>
+</html>
