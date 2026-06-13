@@ -3,97 +3,236 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GS Quiz Hub</title>
+<title>GS QUIZHUB QUIZ APP</title>
 
 <style>
 body{
-font-family:Arial,sans-serif;
-background:#f4f4f4;
-text-align:center;
-margin:0;
-padding:0;
+    margin:0;
+    font-family: Arial;
+    background:#0a0f1e;
+    color:white;
 }
 
-header{
-background:#0d47a1;
-color:white;
-padding:20px;
+/* HERO */
+.hero{
+    height:220px;
+    background:linear-gradient(135deg,rgba(0,0,0,0.7),rgba(0,0,0,0.3)),
+    url('banner.jpg');
+    background-size:cover;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
 }
 
+.hero h1{
+    font-size:38px;
+    background:linear-gradient(90deg,#00f5ff,#ff00d4,#facc15);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.hero button{
+    margin-top:10px;
+    padding:10px 15px;
+    border:none;
+    border-radius:10px;
+    background:#22c55e;
+    color:black;
+    font-weight:bold;
+}
+
+/* CARD */
 .container{
-padding:20px;
+    padding:15px;
 }
 
-.quiz-box{
-background:white;
-max-width:500px;
-margin:auto;
-padding:20px;
-border-radius:10px;
-box-shadow:0 0 10px rgba(0,0,0,0.2);
+.card{
+    background:#111827;
+    padding:15px;
+    border-radius:12px;
+    margin-bottom:12px;
+    border-left:4px solid #38bdf8;
 }
 
-button{
-background:#0d47a1;
-color:white;
-border:none;
-padding:10px 20px;
-margin-top:10px;
-border-radius:5px;
-cursor:pointer;
+.card h2{
+    color:#38bdf8;
 }
 
-button:hover{
-background:#1565c0;
+/* QUIZ BOX */
+.quiz{
+    display:none;
+    background:#1f2937;
+    padding:15px;
+    border-radius:12px;
+    margin:15px;
+}
+
+.option{
+    display:block;
+    padding:10px;
+    margin:8px 0;
+    background:#0b1220;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.option:hover{
+    background:#334155;
+}
+
+/* SCORE */
+.score{
+    font-weight:bold;
+    color:#22c55e;
+}
+
+/* DAILY */
+.daily{
+    margin:15px;
+    padding:15px;
+    background:#0f172a;
+    border:2px solid #22c55e;
+    border-radius:12px;
+}
+
+/* BOTTOM NAV */
+.nav{
+    position:fixed;
+    bottom:0;
+    width:100%;
+    display:flex;
+    justify-content:space-around;
+    background:#111827;
+    padding:10px 0;
+    border-top:1px solid #333;
+}
+
+.nav div{
+    font-size:12px;
+    text-align:center;
+}
+
+/* TOAST */
+.toast{
+    position:fixed;
+    top:20px;
+    right:20px;
+    background:#22c55e;
+    color:black;
+    padding:10px;
+    border-radius:8px;
+    display:none;
 }
 </style>
+
 </head>
 
 <body>
 
-<header>
-<h1>GS Quiz Hub</h1>
-<p>Daily GK & GS Quiz in Hindi + English</p>
-</header>
+<div class="hero">
+    <h1>🔥 GS QUIZHUB</h1>
+    <button onclick="startQuiz()">🧠 Start GK Quiz</button>
+</div>
 
 <div class="container">
 
-<div class="quiz-box">
+<div class="card">
+<h2>📘 SSC / Railway / Police</h2>
+<p>Daily GK + GS Practice Hub</p>
+</div>
 
-<h2>Question 1</h2>
-
-<p>
-भारत की राजधानी क्या है?<br>
-What is the capital of India?
-</p>
-
-<input type="radio" name="q1" value="A"> Mumbai<br>
-<input type="radio" name="q1" value="B"> Kolkata<br>
-<input type="radio" name="q1" value="C"> New Delhi<br>
-<input type="radio" name="q1" value="D"> Chennai<br><br>
-
-<button onclick="checkAnswer()">Submit Answer</button>
-
-<h3 id="result"></h3>
+<div class="daily">
+<h3>🔥 Daily Practice</h3>
+<p>👉 India ka Constitution kab bana?</p>
+<p>👉 Current PM of India?</p>
+<p>👉 Railway GK Important Set</p>
+</div>
 
 </div>
 
+<!-- QUIZ BOX -->
+<div class="quiz" id="quizBox">
+<h2>🧠 Live GK Quiz</h2>
+<h3 id="question"></h3>
+
+<div id="options"></div>
+
+<p class="score">Score: <span id="score">0</span></p>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">Correct ✔</div>
+
+<!-- BOTTOM NAV -->
+<div class="nav">
+<div>🏠 Home</div>
+<div>🧠 Quiz</div>
+<div>📘 Notes</div>
+<div>⚙ Settings</div>
 </div>
 
 <script>
-function checkAnswer(){
-let ans=document.querySelector('input[name="q1"]:checked');
+let questions = [
+{
+q:"भारत की राजधानी क्या है?",
+a:["Delhi","Mumbai","Kolkata","Chennai"],
+correct:0
+},
+{
+q:"Railway का full form क्या है?",
+a:["Indian Railway","Railway India","Train Dept","None"],
+correct:0
+},
+{
+q:"SSC का full form?",
+a:["Staff Selection Commission","State Service","School Service","None"],
+correct:0
+}
+];
 
-if(!ans){
-document.getElementById("result").innerHTML="Please select an answer";
-return;
+let index=0;
+let score=0;
+
+function startQuiz(){
+document.getElementById("quizBox").style.display="block";
+showQ();
 }
 
-if(ans.value=="C"){
-document.getElementById("result").innerHTML="✅ Correct / सही उत्तर";
+function showQ(){
+let q=questions[index];
+document.getElementById("question").innerText=q.q;
+
+let opt="";
+q.a.forEach((o,i)=>{
+opt+=`<div class='option' onclick='check(${i})'>${o}</div>`;
+});
+document.getElementById("options").innerHTML=opt;
 }
-else{
-document.getElementById("result").innerHTML="❌ Wrong / गलत उत्तर<br>Correct Answer: New Delhi";
+
+function check(i){
+if(i===questions[index].correct){
+score++;
+document.getElementById("toast").style.display="block";
+document.getElementById("toast").innerText="Correct ✔";
+}else{
+document.getElementById("toast").style.display="block";
+document.getElementById("toast").innerText="Wrong ❌";
+}
+
+setTimeout(()=>{
+document.getElementById("toast").style.display="none";
+},1000);
+
+index++;
+document.getElementById("score").innerText=score;
+
+if(index<questions.length){
+showQ();
+}else{
+document.getElementById("quizBox").innerHTML=
+`<h2>Quiz Finished 🎯</h2><p>Score: ${score}/${questions.length}</p>`;
 }
 }
 </script>
