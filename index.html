@@ -1,10 +1,102 @@
 <!DOCTYPE html>
-<html>
+<html lang="hi">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GS Quiz Hub</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f4f4;
+text-align:center;
+margin:0;
+padding:0;
+}
+
+header{
+background:#0d47a1;
+color:white;
+padding:20px;
+}
+
+.container{
+padding:20px;
+}
+
+.quiz-box{
+background:white;
+max-width:500px;
+margin:auto;
+padding:20px;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,0.2);
+}
+
+button{
+background:#0d47a1;
+color:white;
+border:none;
+padding:10px 20px;
+margin-top:10px;
+border-radius:5px;
+cursor:pointer;
+}
+
+button:hover{
+background:#1565c0;
+}
+</style>
 </head>
+
 <body>
+
+<header>
 <h1>GS Quiz Hub</h1>
-<p>Welcome to GS Quiz Hub!</p>
+<p>Daily GK & GS Quiz in Hindi + English</p>
+</header>
+
+<div class="container">
+
+<div class="quiz-box">
+
+<h2>Question 1</h2>
+
+<p>
+भारत की राजधानी क्या है?<br>
+What is the capital of India?
+</p>
+
+<input type="radio" name="q1" value="A"> Mumbai<br>
+<input type="radio" name="q1" value="B"> Kolkata<br>
+<input type="radio" name="q1" value="C"> New Delhi<br>
+<input type="radio" name="q1" value="D"> Chennai<br><br>
+
+<button onclick="checkAnswer()">Submit Answer</button>
+
+<h3 id="result"></h3>
+
+</div>
+
+</div>
+
+<script>
+function checkAnswer(){
+let ans=document.querySelector('input[name="q1"]:checked');
+
+if(!ans){
+document.getElementById("result").innerHTML="Please select an answer";
+return;
+}
+
+if(ans.value=="C"){
+document.getElementById("result").innerHTML="✅ Correct / सही उत्तर";
+}
+else{
+document.getElementById("result").innerHTML="❌ Wrong / गलत उत्तर<br>Correct Answer: New Delhi";
+}
+}
+</script>
+
 </body>
 </html>
